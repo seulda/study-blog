@@ -28,6 +28,10 @@ public class Post extends BaseEntity {
   @Schema(description = "게시글 제목")
   private String title;
 
+  @Column(nullable = false)
+  @Schema(description = "게시글 부제목")
+  private String subTitle;
+
   @Column(nullable = false, columnDefinition = "TEXT")
   @Schema(description = "게시글 내용")
   private String content;

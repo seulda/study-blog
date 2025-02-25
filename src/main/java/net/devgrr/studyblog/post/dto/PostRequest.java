@@ -16,6 +16,8 @@ public record PostRequest(
         @NotBlank(message = "필수값: title", groups = PostValidationGroups.articleGroup.class)
         @JsonView(PostValidationGroups.articleGroup.class)
         String title,
+    @Schema(description = "게시글 부제목") @JsonView(PostValidationGroups.articleGroup.class)
+        String subTitle,
     @Schema(description = "게시글 내용")
         @NotBlank(message = "필수값: content", groups = PostValidationGroups.articleGroup.class)
         @JsonView(PostValidationGroups.articleGroup.class)

@@ -46,9 +46,15 @@ public class PostService {
     return post;
   }
 
-  public List<Post> getPostsByKeywords(String title, String content, String tag) {
-    return postRepository.findAllByTitleContainingOrContentContainingOrTagContaining(
-        title, content, tag);
+  public List<Post> getPostsByKeywords(String title, String subTitle, String content, String tag) {
+    return postRepository
+        .findAllByIsDraftFalseAndTitleContainingOrSubTitleContainingOrContentContainingOrTagContaining(
+            title, subTitle, content, tag);
+  }
+
+  public List<Post> getPostsByUser(String userId) {
+    Member member = memberService.selectUserByUserId(userId);
+    return postRepository.findAllByWriterAndIsDraftFalse(member);
   }
 
   @Transactional

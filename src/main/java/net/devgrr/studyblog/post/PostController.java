@@ -12,7 +12,7 @@ import net.devgrr.studyblog.config.exception.BaseException;
 import net.devgrr.studyblog.config.mapStruct.PostMapper;
 import net.devgrr.studyblog.post.dto.PostRequest;
 import net.devgrr.studyblog.post.dto.PostResponse;
-import net.devgrr.studyblog.post.dto.PostValidationGroups;
+import net.devgrr.studyblog.post.dto.PostValidationGroups.articleGroup;
 import net.devgrr.studyblog.post.entity.Post;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -28,21 +28,33 @@ public class PostController {
   private final PostService postService;
   private final PostMapper postMapper;
 
-  @Operation(description = "게시글 목록을 조회한다. 검색 조건이 있다면 조건 키워드가 포함된 게시글을 조회한다.")
+  @Operation(
+      description =
+          "게시글 목록을 조회한다. <br>userId가 있을 경우 해당 사용자가 등록한 게시글 목록을 조회한다. <br>그 외 검색 조건이 있다면 해당 조건에 대해 키워드가 포함된 게시글을 조회한다.\n")
   @GetMapping
   public List<PostResponse> getPosts(
+      @RequestParam(value = "userId", required = false) @Parameter(description = "사용자 ID")
+          String userId,
       @RequestParam(value = "title", required = false) @Parameter(description = "게시글 제목")
           String title,
+      @RequestParam(value = "subTitle", required = false) @Parameter(description = "게시글 부제목")
+          String subTitle,
       @RequestParam(value = "content", required = false) @Parameter(description = "게시글 내용")
           String content,
       @RequestParam(value = "tag", required = false) @Parameter(description = "게시글 태그")
           String tag) {
-    List<Post> posts =
-        (title != null && !title.trim().isEmpty())
-                || (content != null && !content.trim().isEmpty())
-                || (tag != null && !tag.trim().isEmpty())
-            ? postService.getPostsByKeywords(title, content, tag)
-            : postService.getPosts();
+    List<Post> posts;
+    if (userId != null && !userId.trim().isEmpty()) {
+      posts = postService.getPostsByUser(userId);
+    } else {
+      posts =
+          (title != null && !title.trim().isEmpty())
+                  || (subTitle != null && !subTitle.trim().isEmpty())
+                  || (content != null && !content.trim().isEmpty())
+                  || (tag != null && !tag.trim().isEmpty())
+              ? postService.getPostsByKeywords(title, subTitle, content, tag)
+              : postService.getPosts();
+    }
     return posts.isEmpty()
         ? null
         : posts.stream().map(postMapper::toResponse).collect(Collectors.toList());
@@ -58,12 +70,11 @@ public class PostController {
   }
 
   @Operation(description = "게시글을 등록한다.")
-  @JsonView(PostValidationGroups.articleGroup.class)
+  @JsonView(articleGroup.class)
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public PostResponse setPosts(
-      @Validated(PostValidationGroups.articleGroup.class) @RequestBody PostRequest req,
-      Principal principal) {
+      @Validated(articleGroup.class) @RequestBody PostRequest req, Principal principal) {
     Post post = postService.setPosts(req, principal.getName());
     return postMapper.toResponse(post);
   }
@@ -72,7 +83,7 @@ public class PostController {
   @PutMapping("/{id}")
   public void putPostsById(
       @PathVariable("id") @Parameter(description = "게시글 ID") Integer id,
-      @Validated(PostValidationGroups.articleGroup.class) @RequestBody PostRequest req,
+      @Validated(articleGroup.class) @RequestBody PostRequest req,
       Principal principal)
       throws BaseException {
     postService.putPostsById(id, req, principal.getName());

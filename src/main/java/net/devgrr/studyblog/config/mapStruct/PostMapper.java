@@ -44,6 +44,10 @@ public interface PostMapper {
       source = "title",
       nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(
+      target = "subTitle",
+      source = "subTitle",
+      nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  @Mapping(
       target = "content",
       source = "content",
       nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
