@@ -5,5 +5,8 @@ RUN gradle build --no-daemon --stacktrace --info
 
 FROM openjdk:17-jdk-alpine
 EXPOSE 8080
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/study-blog.jar 
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/study-blog.jar
+RUN apk add --no-cache tzdata \
+    && cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime \
+    && echo "Asia/Seoul" > /etc/timezone
 CMD ["java", "-jar", "/app/study-blog.jar"]
