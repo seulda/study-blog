@@ -1,6 +1,6 @@
 spring:
   application:
-    name: study-blog
+    name: interp.log.api
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: ENC(WBA6GnCCnGXAn3o+OqObJAm71g+WitNmuzjAOkPup4IrWCgBYKuC8SOjYzeHHcbYir5ZJddp2JNtry6+BWJxXM3HN50FvOzYigeywwgdk/m359oYf6o1NMFqJoS3eYCoQ/62izf/aOI6JLeodQagDtdUhv6Sze8srnqSnXeQpgj+hngwRc35nam0aqQglfor)
@@ -35,7 +35,7 @@ logging:
   level:
     root: info
     org.hibernate.SQL: debug
-    net.devgrr.springdemo: debug
+    net.devgrr.interp.log.api: debug
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
 
@@ -52,6 +52,6 @@ management:
         include: "*"
         exclude: "env,beans"
 server:
-  port: 8080
+  port: 8081
   error:
     include-stacktrace: always
