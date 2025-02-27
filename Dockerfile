@@ -4,7 +4,7 @@ WORKDIR /home/gradle/src
 RUN gradle build --no-daemon --stacktrace --info
 
 FROM openjdk:17-jdk-alpine
-EXPOSE 8080
+EXPOSE 8081
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/interp.log.api.jar
 RUN apk add --no-cache tzdata \
     && cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime \
