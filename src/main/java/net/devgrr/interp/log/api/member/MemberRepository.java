@@ -1,10 +1,18 @@
 package net.devgrr.interp.log.api.member;
 
+import java.util.List;
 import java.util.Optional;
 import net.devgrr.interp.log.api.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface MemberRepository extends JpaRepository<Member, Integer> {
+  List<Member> findAllByIsActiveTrue();
+
+  List<Member> findAllByIsActiveFalse();
+
   Optional<Member> findByUserId(String userId);
 
   boolean existsByUserId(String userId);
@@ -13,5 +21,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
   Optional<Member> findByRefreshToken(String refreshToken);
 
-  void deleteByUserId(String userId);
+  @Modifying
+  @Query("UPDATE Member m SET m.isActive = false WHERE m.userId = :userId")
+  void deactivateByUserId(@Param("userId") String userId);
 }

@@ -37,6 +37,7 @@ public interface MemberMapper {
 
   @Mapping(source = "password", target = "password", qualifiedByName = "pwEncoder")
   @Mapping(source = "role", target = "role", qualifiedByName = "toMemberRole")
+  @Mapping(target = "isActive", expression = "java(true)")
   Member toMember(MemberRequest memberRequest);
 
   MemberResponse toResponse(Member member);
@@ -46,7 +47,9 @@ public interface MemberMapper {
   @Mapping(target = "password", ignore = true)
   @Mapping(target = "name", ignore = true)
   @Mapping(target = "email", ignore = true)
+  @Mapping(target = "image", ignore = true)
   @Mapping(target = "role", ignore = true)
+  @Mapping(target = "isActive", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "refreshToken", source = "refreshToken")
   Member updateMemberRefreshToken(Member updateMember, @MappingTarget Member member);

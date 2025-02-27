@@ -10,6 +10,8 @@ public record MemberResponse(
     @Schema(description = "회원 ID") String userId,
     @Schema(description = "회원 이름") String name,
     @Schema(description = "회원 이메일") String email,
+    @Schema(description = "회원 이미지") String image,
+    @Schema(description = "회원 활성 여부 (true: 활성, false: 비활성)") Boolean isActive,
     @Schema(description = "회원 생성 일자") @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime createdAt,
     @Schema(description = "회원 수정 일자") @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

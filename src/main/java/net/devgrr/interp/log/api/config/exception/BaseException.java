@@ -11,4 +11,9 @@ public class BaseException extends Exception {
     super(message);
     this.errorCode = errorCode;
   }
+
+  public BaseException(ErrorCode errorCode) {
+    super(errorCode.getMessage());
+    this.errorCode = errorCode;
+  }
 }

@@ -50,8 +50,8 @@ public class Member extends BaseEntity {
   @Schema(description = "이메일")
   private String email;
 
-  //  @Schema(description = "계정 이미지")
-  //  private String image;
+  @Schema(description = "이미지")
+  private String image;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
@@ -61,6 +61,10 @@ public class Member extends BaseEntity {
   @Column(length = 1000)
   @Schema(description = "인증 토큰")
   private String refreshToken;
+
+  @Column(nullable = false, columnDefinition = "boolean default true")
+  @Schema(description = "활성 여부 (true: 활성, false: 비활성)")
+  private Boolean isActive;
 
   @JsonIgnore
   @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)

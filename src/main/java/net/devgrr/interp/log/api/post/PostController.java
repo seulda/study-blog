@@ -41,8 +41,8 @@ public class PostController {
           String subTitle,
       @RequestParam(value = "content", required = false) @Parameter(description = "게시글 내용")
           String content,
-      @RequestParam(value = "tag", required = false) @Parameter(description = "게시글 태그")
-          String tag) {
+      @RequestParam(value = "tag", required = false) @Parameter(description = "게시글 태그") String tag)
+      throws BaseException {
     List<Post> posts;
     if (userId != null && !userId.trim().isEmpty()) {
       posts = postService.getPostsByUser(userId);
@@ -74,7 +74,8 @@ public class PostController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public PostResponse setPosts(
-      @Validated(articleGroup.class) @RequestBody PostRequest req, Principal principal) {
+      @Validated(articleGroup.class) @RequestBody PostRequest req, Principal principal)
+      throws BaseException {
     Post post = postService.setPosts(req, principal.getName());
     return postMapper.toResponse(post);
   }

@@ -52,14 +52,14 @@ public class PostService {
             title, subTitle, content, tag);
   }
 
-  public List<Post> getPostsByUser(String userId) {
-    Member member = memberService.selectUserByUserId(userId);
+  public List<Post> getPostsByUser(String userId) throws BaseException {
+    Member member = memberService.getUsersById(userId);
     return postRepository.findAllByWriterAndIsDraftFalse(member);
   }
 
   @Transactional
-  public Post setPosts(PostRequest req, String userId) {
-    Member member = memberService.selectUserByUserId(userId);
+  public Post setPosts(PostRequest req, String userId) throws BaseException {
+    Member member = memberService.getUsersById(userId);
     Post post = postMapper.toPost(req, member);
     postRepository.save(post);
     return post;
@@ -98,7 +98,7 @@ public class PostService {
       postRepository.save(post);
     } else {
       // like
-      post.getLikes().add(memberService.selectUserByUserId(userId));
+      post.getLikes().add(memberService.getUsersById(userId));
       postRepository.save(post);
     }
   }

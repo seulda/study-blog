@@ -61,7 +61,7 @@ public class CommentService {
 
   @Transactional
   public Comment setComments(CommentRequest req, String userId) throws BaseException {
-    Member member = memberService.selectUserByUserId(userId);
+    Member member = memberService.getUsersById(userId);
     Post post = postService.existPostsById(req.postId());
     Comment comment = commentMapper.toComment(req, post, member);
     commentRepository.save(comment);
@@ -100,7 +100,7 @@ public class CommentService {
       comment.getLikes().removeIf(member -> member.getUserId().equals(userId));
     } else {
       // like
-      comment.getLikes().add(memberService.selectUserByUserId(userId));
+      comment.getLikes().add(memberService.getUsersById(userId));
     }
     commentRepository.save(comment);
   }
