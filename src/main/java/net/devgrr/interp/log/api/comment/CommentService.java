@@ -32,6 +32,9 @@ public class CommentService {
     return commentRepository.findAllByPostId(postId);
   }
 
+  /*
+   * TODO: 2depth 이상 대댓글 또한 중첩 구조로 조회한다.
+   * */
   public List<CommentResponse> getCommentsByPostIdNested(Integer postId) {
     List<Comment> comments = getCommentsByPostId(postId);
     return comments.stream()
